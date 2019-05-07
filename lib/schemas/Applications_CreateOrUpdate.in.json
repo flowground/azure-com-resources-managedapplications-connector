@@ -1,0 +1,229 @@
+{
+    "type": "object",
+    "properties": {
+        "resourceGroupName": {
+            "required": true,
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 90,
+            "pattern": "^[-\\w\\._\\(\\)]+$"
+        },
+        "applicationName": {
+            "required": true,
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 64
+        },
+        "subscriptionId": {
+            "required": true,
+            "type": "string"
+        },
+        "requestBody": {
+            "allOf": [
+                {
+                    "allOf": [
+                        {
+                            "description": "Resource information.",
+                            "properties": {
+                                "id": {
+                                    "description": "Resource ID",
+                                    "readOnly": true,
+                                    "type": "string"
+                                },
+                                "location": {
+                                    "description": "Resource location",
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "description": "Resource name",
+                                    "readOnly": true,
+                                    "type": "string"
+                                },
+                                "tags": {
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    },
+                                    "description": "Resource tags",
+                                    "type": "object"
+                                },
+                                "type": {
+                                    "description": "Resource type",
+                                    "readOnly": true,
+                                    "type": "string"
+                                }
+                            },
+                            "x-ms-azure-resource": true,
+                            "type": "object"
+                        }
+                    ],
+                    "description": "Resource information.",
+                    "properties": {
+                        "identity": {
+                            "description": "The identity of the resource.",
+                            "properties": {
+                                "principalId": {
+                                    "description": "The principal ID of resource identity.",
+                                    "readOnly": true,
+                                    "type": "string"
+                                },
+                                "tenantId": {
+                                    "description": "The tenant ID of resource.",
+                                    "readOnly": true,
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "description": "The identity type.",
+                                    "enum": [
+                                        "SystemAssigned"
+                                    ],
+                                    "type": "string",
+                                    "x-ms-enum": {
+                                        "modelAsString": false,
+                                        "name": "ResourceIdentityType"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "managedBy": {
+                            "description": "ID of the resource that manages this resource.",
+                            "type": "string"
+                        },
+                        "sku": {
+                            "description": "The SKU of the resource.",
+                            "properties": {
+                                "capacity": {
+                                    "description": "The SKU capacity.",
+                                    "format": "int32",
+                                    "type": "integer"
+                                },
+                                "family": {
+                                    "description": "The SKU family.",
+                                    "type": "string"
+                                },
+                                "model": {
+                                    "description": "The SKU model.",
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "description": "The SKU name.",
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "description": "The SKU size.",
+                                    "type": "string"
+                                },
+                                "tier": {
+                                    "description": "The SKU tier.",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "name"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "type": "object"
+                }
+            ],
+            "description": "Information about managed application.",
+            "properties": {
+                "kind": {
+                    "description": "The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.",
+                    "pattern": "^[-\\w\\._,\\(\\)]+$",
+                    "type": "string"
+                },
+                "plan": {
+                    "description": "The plan information.",
+                    "properties": {
+                        "name": {
+                            "description": "The plan name.",
+                            "type": "string"
+                        },
+                        "product": {
+                            "description": "The product code.",
+                            "type": "string"
+                        },
+                        "promotionCode": {
+                            "description": "The promotion code.",
+                            "type": "string"
+                        },
+                        "publisher": {
+                            "description": "The publisher ID.",
+                            "type": "string"
+                        },
+                        "version": {
+                            "description": "The plan's version.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "name",
+                        "publisher",
+                        "product",
+                        "version"
+                    ],
+                    "type": "object"
+                },
+                "properties": {
+                    "description": "The managed application properties.",
+                    "x-ms-client-flatten": true,
+                    "properties": {
+                        "applicationDefinitionId": {
+                            "description": "The fully qualified path of managed application definition Id.",
+                            "type": "string"
+                        },
+                        "managedResourceGroupId": {
+                            "description": "The managed resource group Id.",
+                            "type": "string"
+                        },
+                        "outputs": {
+                            "description": "Name and value pairs that define the managed application outputs.",
+                            "readOnly": true,
+                            "type": "object"
+                        },
+                        "parameters": {
+                            "description": "Name and value pairs that define the managed application parameters. It can be a JObject or a well formed JSON string.",
+                            "type": "object"
+                        },
+                        "provisioningState": {
+                            "description": "The managed application provisioning state.",
+                            "readOnly": true,
+                            "enum": [
+                                "Accepted",
+                                "Running",
+                                "Ready",
+                                "Creating",
+                                "Created",
+                                "Deleting",
+                                "Deleted",
+                                "Canceled",
+                                "Failed",
+                                "Succeeded",
+                                "Updating"
+                            ],
+                            "type": "string",
+                            "x-ms-enum": {
+                                "modelAsString": true,
+                                "name": "ProvisioningState"
+                            }
+                        }
+                    },
+                    "required": [
+                        "managedResourceGroupId"
+                    ]
+                }
+            },
+            "required": [
+                "properties",
+                "kind"
+            ],
+            "type": "object"
+        },
+        "api_version": {
+            "required": true,
+            "type": "string"
+        }
+    }
+}

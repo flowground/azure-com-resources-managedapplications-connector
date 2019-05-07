@@ -1,0 +1,242 @@
+{
+    "type": "object",
+    "properties": {
+        "resourceGroupName": {
+            "required": true,
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 90,
+            "pattern": "^[-\\w\\._\\(\\)]+$"
+        },
+        "applicationDefinitionName": {
+            "required": true,
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 64
+        },
+        "subscriptionId": {
+            "required": true,
+            "type": "string"
+        },
+        "requestBody": {
+            "allOf": [
+                {
+                    "allOf": [
+                        {
+                            "description": "Resource information.",
+                            "properties": {
+                                "id": {
+                                    "description": "Resource ID",
+                                    "readOnly": true,
+                                    "type": "string"
+                                },
+                                "location": {
+                                    "description": "Resource location",
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "description": "Resource name",
+                                    "readOnly": true,
+                                    "type": "string"
+                                },
+                                "tags": {
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    },
+                                    "description": "Resource tags",
+                                    "type": "object"
+                                },
+                                "type": {
+                                    "description": "Resource type",
+                                    "readOnly": true,
+                                    "type": "string"
+                                }
+                            },
+                            "x-ms-azure-resource": true,
+                            "type": "object"
+                        }
+                    ],
+                    "description": "Resource information.",
+                    "properties": {
+                        "identity": {
+                            "description": "The identity of the resource.",
+                            "properties": {
+                                "principalId": {
+                                    "description": "The principal ID of resource identity.",
+                                    "readOnly": true,
+                                    "type": "string"
+                                },
+                                "tenantId": {
+                                    "description": "The tenant ID of resource.",
+                                    "readOnly": true,
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "description": "The identity type.",
+                                    "enum": [
+                                        "SystemAssigned"
+                                    ],
+                                    "type": "string",
+                                    "x-ms-enum": {
+                                        "modelAsString": false,
+                                        "name": "ResourceIdentityType"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "managedBy": {
+                            "description": "ID of the resource that manages this resource.",
+                            "type": "string"
+                        },
+                        "sku": {
+                            "description": "The SKU of the resource.",
+                            "properties": {
+                                "capacity": {
+                                    "description": "The SKU capacity.",
+                                    "format": "int32",
+                                    "type": "integer"
+                                },
+                                "family": {
+                                    "description": "The SKU family.",
+                                    "type": "string"
+                                },
+                                "model": {
+                                    "description": "The SKU model.",
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "description": "The SKU name.",
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "description": "The SKU size.",
+                                    "type": "string"
+                                },
+                                "tier": {
+                                    "description": "The SKU tier.",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "name"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "type": "object"
+                }
+            ],
+            "description": "Information about managed application definition.",
+            "properties": {
+                "properties": {
+                    "description": "The managed application definition properties.",
+                    "x-ms-client-flatten": true,
+                    "properties": {
+                        "artifacts": {
+                            "description": "The collection of managed application artifacts. The portal will use the files specified as artifacts to construct the user experience of creating a managed application from a managed application definition.",
+                            "items": {
+                                "description": "Managed application artifact.",
+                                "properties": {
+                                    "name": {
+                                        "description": "The managed application artifact name.",
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "description": "The managed application artifact type.",
+                                        "enum": [
+                                            "Template",
+                                            "Custom"
+                                        ],
+                                        "type": "string",
+                                        "x-ms-enum": {
+                                            "modelAsString": false,
+                                            "name": "ApplicationArtifactType"
+                                        }
+                                    },
+                                    "uri": {
+                                        "description": "The managed application artifact blob uri.",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "type": "array"
+                        },
+                        "authorizations": {
+                            "description": "The managed application provider authorizations.",
+                            "items": {
+                                "description": "The managed application provider authorization.",
+                                "properties": {
+                                    "principalId": {
+                                        "description": "The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the managed application resources.",
+                                        "type": "string"
+                                    },
+                                    "roleDefinitionId": {
+                                        "description": "The provider's role definition identifier. This role will define all the permissions that the provider must have on the managed application's container resource group. This role definition cannot have permission to delete the resource group.",
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "principalId",
+                                    "roleDefinitionId"
+                                ],
+                                "type": "object"
+                            },
+                            "type": "array"
+                        },
+                        "createUiDefinition": {
+                            "description": "The createUiDefinition json for the backing template with Microsoft.Solutions/applications resource. It can be a JObject or well-formed JSON string.",
+                            "type": "object"
+                        },
+                        "description": {
+                            "description": "The managed application definition description.",
+                            "type": "string"
+                        },
+                        "displayName": {
+                            "description": "The managed application definition display name.",
+                            "type": "string"
+                        },
+                        "isEnabled": {
+                            "description": "A value indicating whether the package is enabled or not.",
+                            "type": "string"
+                        },
+                        "lockLevel": {
+                            "description": "The managed application lock level.",
+                            "enum": [
+                                "CanNotDelete",
+                                "ReadOnly",
+                                "None"
+                            ],
+                            "type": "string",
+                            "x-ms-enum": {
+                                "modelAsString": false,
+                                "name": "ApplicationLockLevel"
+                            }
+                        },
+                        "mainTemplate": {
+                            "description": "The inline main template json which has resources to be provisioned. It can be a JObject or well-formed JSON string.",
+                            "type": "object"
+                        },
+                        "packageFileUri": {
+                            "description": "The managed application definition package file Uri. Use this element",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "lockLevel",
+                        "authorizations"
+                    ]
+                }
+            },
+            "required": [
+                "properties"
+            ],
+            "type": "object"
+        },
+        "api_version": {
+            "required": true,
+            "type": "string"
+        }
+    }
+}
